@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
 void main() {
   runApp(const MyApp());
@@ -32,6 +33,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
 
+  final ImagePicker _imagePicker = ImagePicker();
   File? _image;
 
   @override
@@ -47,7 +49,7 @@ class _MyHomePageState extends State<MyHomePage> {
             _image != null ? Image.file(_image!) : const Icon(Icons.image, size: 150,),
             ElevatedButton(
               onPressed: _chooseImages,
-              onLongPress: _chooseImages,
+              onLongPress: _captureImage,
               child: const Text('Choose / Capture'),
             ),
           ],
@@ -56,11 +58,21 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  _chooseImages(){
-
+  _chooseImages() async {
+    final img = await _imagePicker.pickImage(source: ImageSource.gallery);
+    if (img != null){
+      setState(() {
+        _image = File(img.path);
+      });      
+    }
   }
 
-  _captureImage(){
-
+  _captureImage() async {
+    final  img = await _imagePicker.pickImage(source: ImageSource.camera);
+    if (img != null){
+      setState(() {
+        _image = File(img.path);
+      });      
+    }
   }
 }
