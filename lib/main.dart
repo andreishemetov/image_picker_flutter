@@ -49,8 +49,12 @@ class _MyHomePageState extends State<MyHomePage> {
             _image != null ? Image.file(_image!) : const Icon(Icons.image, size: 150,),
             ElevatedButton(
               onPressed: _chooseImages,
-              onLongPress: _captureImage,
-              child: const Text('Choose / Capture'),
+              child: const Text('Choose image'),
+            ),
+            const SizedBox(height: 20,),
+            ElevatedButton(
+              onPressed: _captureImage,
+              child: const Text('Capture image'),
             ),
           ],
         ),
