@@ -32,35 +32,9 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
 
-  File? _image;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            _image != null ? Image.file(_image!) : const Icon(Icons.image, size: 150,),
-            ElevatedButton(
-              onPressed: _chooseImages,
-              onLongPress: _chooseImages,
-              child: const Text('Choose / Capture'),
-            ),
-          ],
-        ),
-      ),
     );
-  }
-
-  _chooseImages(){
-
-  }
-
-  _captureImage(){
-
   }
 }
