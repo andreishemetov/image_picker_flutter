@@ -1,8 +1,13 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:camera/camera.dart';
 
-void main() {
+late List<CameraDescription> _cameras;
+
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  _cameras = await availableCameras();
   runApp(const MyApp());
 }
 
@@ -32,9 +37,35 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
 
+  late CameraController _cameraController;
+
+  @override
+  void initState() {
+    super.initState();
+    _cameraController = CameraController(_cameras.first, ResolutionPreset.high);
+    _cameraController.initialize().then((_) {
+      if (!mounted) {
+        return;
+      }
+      setState(() {});
+    }).catchError((Object e) {
+      if (e is CameraException) {
+        switch (e.code) {
+          case 'CameraAccessDenied':
+            // Handle access errors here.
+            break;
+          default:
+            // Handle other errors here.
+            break;
+        }
+      }
+    });    
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      body: CameraPreview(_cameraController),
     );
   }
 }
