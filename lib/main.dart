@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:google_mlkit_image_labeling/google_mlkit_image_labeling.dart';
 
 void main() {
   runApp(const MyApp());
@@ -41,10 +42,21 @@ class _MyHomePageState extends State<MyHomePage> {
   File? _image;
   String result = 'Results will be shown here';
 
+  late ImageLabeler _imageLabeler;
+
   @override
   void initState() {
     super.initState();
     _imagePicker = ImagePicker();
+    final ImageLabelerOptions options =
+        ImageLabelerOptions(confidenceThreshold: 0.5);
+    _imageLabeler = ImageLabeler(options: options);
+  }
+
+  @override
+  void dispose() {
+    _imageLabeler.close();
+    super.dispose();
   }
 
   @override
@@ -118,7 +130,8 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   _imgFromCamera() async {
-    XFile? pickedFile = await _imagePicker.pickImage(source: ImageSource.camera);
+    XFile? pickedFile =
+        await _imagePicker.pickImage(source: ImageSource.camera);
     _image = File(pickedFile!.path);
     setState(() {
       _image;
@@ -137,7 +150,19 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
-  //TODO image labeling code here
   doImageLabeling() async {
+    InputImage inputImage = InputImage.fromFile(_image!);
+    final List<ImageLabel> labels = await _imageLabeler.processImage(inputImage);
+
+    result = '';
+    for (ImageLabel label in labels) {
+      final String text = label.label;
+      final int index = label.index;
+      final double confidence = label.confidence;
+      result += text + " " + confidence.toStringAsFixed(2) + "\n";
+    }
+    setState(() {
+      result;
+    });
   }
 }
