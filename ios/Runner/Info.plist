@@ -26,6 +26,8 @@
 	<true/>
 	<key>NSCameraUsageDescription</key>
 	<string>Use camera to get photo</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Use microphone to record the audio</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Use photo library to get photo</string>
 	<key>UILaunchStoryboardName</key>
