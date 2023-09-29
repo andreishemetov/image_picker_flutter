@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-// import 'package:google_mlkit_barcode_scanning/google_mlkit_barcode_scanning.dart';
+import 'package:google_mlkit_barcode_scanning/google_mlkit_barcode_scanning.dart';
 import 'package:image_picker/image_picker.dart';
 
 void main() {
@@ -36,15 +36,13 @@ class _MyHomePageState extends State<MyHomePage> {
   late ImagePicker imagePicker;
   File? _image;
   String result = 'results will be shown here';
-  // late BarcodeScanner barcodeScanner;
+  late BarcodeScanner barcodeScanner;
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     imagePicker = ImagePicker();
-    //TODO initialize scanner
-    // barcodeScanner = BarcodeScanner(formats: [BarcodeFormat.all]);
+    barcodeScanner = BarcodeScanner(formats: [BarcodeFormat.all]);
   }
 
   @override
@@ -76,21 +74,21 @@ class _MyHomePageState extends State<MyHomePage> {
 
   //TODO barcode scanning code here
   doBarcodeScanning() async {
-    // InputImage inputImage = InputImage.fromFile(_image!);
-    // final barcodes = await barcodeScanner.processImage(inputImage);
+    InputImage inputImage = InputImage.fromFile(_image!);
+    final barcodes = await barcodeScanner.processImage(inputImage);
 
-    // for (Barcode barcode in barcodes) {
-    //   final BarcodeType type = barcode.type;
-    //   switch (type) {
-    //     case BarcodeType.url:
-    //       BarcodeUrl barcodeUrl = barcode.value as BarcodeUrl;
-    //       result = 'Url: ' + barcodeUrl.url!;
-    //       break;
-    //     default:
-    //       break;
-    //   }
-    // }
-    // setState(() {});
+    for (Barcode barcode in barcodes) {
+      final BarcodeType type = barcode.type;
+      switch (type) {
+        case BarcodeType.url:
+          BarcodeUrl barcodeUrl = barcode.value as BarcodeUrl;
+          result = 'Url: ' + barcodeUrl.url!;
+          break;
+        default:
+          break;
+      }
+    }
+    setState(() {});
   }
 
   @override
