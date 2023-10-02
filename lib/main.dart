@@ -4,6 +4,7 @@ import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mlkit_barcode_scanning/google_mlkit_barcode_scanning.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:image_picker_flutter/barcode/camera_barcode.dart';
 import 'package:image_picker_flutter/barcode/image_barcode.dart';
 
 late List<CameraDescription> cameras;
@@ -24,7 +25,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const ImageBarcodePage(title: 'Flutter Demo Home Page'),
+      home: const CameraBarcodePage(title: 'Flutter Demo Home Page'),
     );
   }
 }

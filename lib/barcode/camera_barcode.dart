@@ -33,10 +33,14 @@ class _CameraBarcodePageState extends State<CameraBarcodePage> {
       if (!mounted) {
         return;
       }
-      controller.startImageStream((image) => {
-            if (!isBusy) {isBusy = true, img = image, _doBarcodeScanning()}
-          });
-      setState(() {});
+      controller.startImageStream((image) {
+        if (!isBusy) {
+          isBusy = true;
+          _cameraImage = image;
+          _doBarcodeScanning();
+          isBusy = false;
+        }
+      });
     }).catchError((Object e) {
       if (e is CameraException) {
         switch (e.code) {
@@ -89,20 +93,21 @@ class _CameraBarcodePageState extends State<CameraBarcodePage> {
   }
 
   _doBarcodeScanning() async {
-    // InputImage inputImage = InputImage.fromFile(_image!);
-    // final barcodes = await barcodeScanner.processImage(inputImage);
+    result = '';
+    InputImage inputImage = _getInputImage();
+    final barcodes = await barcodeScanner.processImage(inputImage);
 
-    // for (Barcode barcode in barcodes) {
-    //   final BarcodeType type = barcode.type;
-    //   switch (type) {
-    //     case BarcodeType.url:
-    //       BarcodeUrl barcodeUrl = barcode.value as BarcodeUrl;
-    //       result = 'Url: ' + barcodeUrl.url!;
-    //       break;
-    //     default:
-    //       break;
-    //   }
-    // }
+    for (Barcode barcode in barcodes) {
+      final BarcodeType type = barcode.type;
+      switch (type) {
+        case BarcodeType.url:
+          BarcodeUrl barcodeUrl = barcode.value as BarcodeUrl;
+          result = 'Url: ' + barcodeUrl.url!;
+          break;
+        default:
+          break;
+      }
+    }
     setState(() {});
   }
 
